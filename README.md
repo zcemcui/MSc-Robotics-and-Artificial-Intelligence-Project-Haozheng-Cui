@@ -5,6 +5,8 @@ This repository contains the source code for the MSc Robotics and Artificial Int
 
 The project proposes a novel one-step method to convert a 3D Gaussian Splatting (3DGS) scene directly into a Neural Radiance Field (NeRF) representation. This work provides an efficient bridge between these two leading 3D scene reconstruction methods.
 
+If you want to run the code from Method 2, please check out the newly updated version in my resposotry named 3DGS-NeRF
+
 ## Project Overview
 
 In a heterogeneous robotic system where different 3D reconstruction methods are employed, the ability to convert between them is crucial. The current methods often rely on a two-step process that requires pre-rendered images. This project presents a new approach that distills the radiance field by training a lightweight MLP, similar to Instant-NGP, from a tensor storing pixel information.

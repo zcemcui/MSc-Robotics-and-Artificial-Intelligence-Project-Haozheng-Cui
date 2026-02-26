@@ -24,7 +24,7 @@ Initially, I hypothesized that explicit ellipsoids could be directly mapped to a
 
 * **What went wrong:** The conversion resulted in a blurry, bounded box-like shadow.
 * **The Insight:** Explicit Gaussian parameters (especially the quaternion rotation matrices) cannot be trivially mapped to scalar volume density ($\sigma$). The mathematical dimensions of 3DGS opacity ($\alpha$) and NeRF volume density ($\sigma$) are fundamentally mismatched in 3D space.
-* **Core Code:** [`/Phase1_Direct_3D_Conversion`](./Phase1_Direct_3D_Conversion)
+* **Core Code:** [`/Phase1_Direct_Conversion`](./Phase1_Direct_Conversion)
 
 <p align="center">
   <img src="[在这里填入你Phase1失败结果的图片链接]" alt="Phase 1 Failed Result" width="60%">
@@ -34,12 +34,13 @@ Initially, I hypothesized that explicit ellipsoids could be directly mapped to a
 
 ---
 
-### 🚧 Phase 2: Image-Level Distillation (The Engineering Bottleneck)
+### 🚧 Phase 2: Online Distillation (The Engineering Bottleneck)
 To bypass the 3D mathematical conflict, I pivoted to **2D Image-Level Distillation**. The strategy was to let a frozen 3DGS "Teacher" render 2D images to supervise a NeRF "Student".
 
 * **Online Distillation (via Nerfstudio):** Attempted real-time rendering supervision. **Result:** Catastrophic VRAM consumption. The architectural clash between 3DGS rasterization and NeRF ray-tracing in the same training loop caused severe memory bottlenecks.
-* **Offline Cached Distillation (via Instant-NGP):** Implemented a `build_gpu_cache` to pre-render 3DGS outputs, solving the VRAM issue. **Result:** Achieved extremely fast training, but the low-capacity Instant-NGP model lacked geometric constraints, resulting in "floaters" and suboptimal novel-view synthesis.
-* **Core Code:** [`/Phase2_Image_Distillation_Trials`](./Phase2_Image_Distillation_Trials)
+* **Offline Cached Distillation (via Instant-NGP):** Implemented a `build_gpu_cache` to pre-render 3DGS outputs, solving the VRAM issue. **Result:** Achieved extremely fast training, but the low-capacity Instant-NGP model lacked geometric constraints, resulting in "floaters".
+* **Core Code:** [`/Phase2_Online_Distillation`](./Phase2_Online_Distillation)
+* **Standalone Scripts:** [`Method2_train.py`](./Method2_train.py) | [`Method2_render_and_eval.py`](./Method2_render_and_eval.py)
 
 <p align="center">
   <img src="[在这里填入Phase2效果一般或者报错的图片链接]" alt="Phase 2 Floaters or Bottleneck" width="60%">
@@ -49,13 +50,13 @@ To bypass the 3D mathematical conflict, I pivoted to **2D Image-Level Distillati
 
 ---
 
-### 🌟 Phase 3: Depth-Supervised Nerfacto (The Ultimate Solution)
+### 🌟 Phase 3: Final Approach (Depth-Supervised Nerfacto)
 *(Currently Active)*
 To achieve both high fidelity and clean geometry suitable for robot navigation, I upgraded the student model to **Nerfacto** and introduced **Depth Supervision**.
 
 * **The Approach:** By extracting high-precision depth maps alongside RGB from the 3DGS teacher, the NeRF student is strictly constrained in its geometric solution space.
 * **The Result:** This completely eliminated floaters, yielding a highly compact, visually stunning continuous surface ready for downstream SLAM tasks.
-* **Core Code:** [`/Phase3_Depth_Supervised_Nerfacto`](./Phase3_Depth_Supervised_Nerfacto)
+* **Core Code:** [`/Phase3_Final_Approach`](./Phase3_Final_Approach)
 
 <p align="center">
   <img src="[在这里填入Phase3完美渲染效果的图片或GIF链接]" alt="Phase 3 Final Result" width="80%">
@@ -67,9 +68,11 @@ To achieve both high fidelity and clean geometry suitable for robot navigation, 
 
 ## 📁 Repository Navigation
 
-* **`Phase1_Direct_3D_Conversion/`**: Contains the FAISS-based KNN 3D spatial mapping scripts.
-* **`Phase2_Image_Distillation_Trials/`**: Contains the offline GPU-cached Instant-NGP distillation code and notes on the online Nerfstudio pipeline.
-* **`Phase3_Depth_Supervised_Nerfacto/`**: Contains the depth-extraction and enhanced Nerfacto training configurations.
+* **`Phase1_Direct_Conversion/`**: Contains the FAISS-based KNN 3D spatial mapping scripts.
+* **`Phase2_Online_Distillation/`**: Contains the code for real-time and cached 2D distillation trials.
+* **`Phase3_Final_Approach/`**: Contains the depth-extraction and enhanced Nerfacto training configurations.
+* **`Method2_train.py`**: Entry point for Method 2 training (Instant-NGP based).
+* **`Method2_render_and_eval.py`**: Evaluation script for quantitative analysis of distilled models.
 
 ## 🔗 External Links
 For full reproducibility and access to the complete modified frameworks:

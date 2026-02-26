@@ -40,7 +40,7 @@ To bypass the 3D mathematical conflict, I pivoted to **2D Image-Level Distillati
 * **Online Distillation (via Nerfstudio):** Attempted real-time rendering supervision. **Result:** Catastrophic VRAM consumption. The architectural clash between 3DGS rasterization and NeRF ray-tracing in the same training loop caused severe memory bottlenecks.
 * **Offline Cached Distillation (via Instant-NGP):** Implemented a `build_gpu_cache` to pre-render 3DGS outputs, solving the VRAM issue. **Result:** Achieved extremely fast training, but the low-capacity Instant-NGP model lacked geometric constraints, resulting in "floaters".
 * **Core Code:** [`/Phase2_Online_Distillation`](./Phase2_Online_Distillation)
-* **Standalone Scripts:** [`Method2_train.py`](./Method2_train.py) | [`Method2_render_and_eval.py`](./Method2_render_and_eval.py)
+
 
 <p align="center">
   <img src="[在这里填入Phase2效果一般或者报错的图片链接]" alt="Phase 2 Floaters or Bottleneck" width="60%">
@@ -71,8 +71,6 @@ To achieve both high fidelity and clean geometry suitable for robot navigation, 
 * **`Phase1_Direct_Conversion/`**: Contains the FAISS-based KNN 3D spatial mapping scripts.
 * **`Phase2_Online_Distillation/`**: Contains the code for real-time and cached 2D distillation trials.
 * **`Phase3_Final_Approach/`**: Contains the depth-extraction and enhanced Nerfacto training configurations.
-* **`Method2_train.py`**: Entry point for Method 2 training (Instant-NGP based).
-* **`Method2_render_and_eval.py`**: Evaluation script for quantitative analysis of distilled models.
 
 ## 🔗 External Links
 For full reproducibility and access to the complete modified frameworks:

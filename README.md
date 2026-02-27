@@ -74,7 +74,7 @@ To achieve both high fidelity and clean geometry suitable for robot navigation, 
 
 ## 🔗 External Links
 For full reproducibility and access to the complete modified frameworks:
-* 🖥️ **[View Phase 2 Online Code (Nerfstudio Fork)](在这里粘贴你大库phase2-online分支的链接)**
+* 🖥️ **https://github.com/zcemcui/Integration_3DGS2NeRF_nerfstudio/tree/phase2-online#**
 * 🖥️ **[View Phase 3 Offline Code (Nerfstudio Fork)](在这里粘贴你大库phase3-offline分支的链接)**
 
 ---
